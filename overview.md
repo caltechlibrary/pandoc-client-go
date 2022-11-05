@@ -1,12 +1,14 @@
-Pandoc Client
-=============
 
-This repository holds an experimental Go package that functions as a client to pandoc-server.
-Caltech Library builds many of it static websites using Pandoc to render Markdown (and other
-formats) to HTML (or other formats). This is typically done via scripting (e.g. Bash, Python)
-or a dedicated application (e.g. something written in Go). For a small number of pages in a
-slow change website doing an "exec" makes sense. This approach breaks down when you have a
-website (e.g. https://feeds.library.caltech.edu) that has 118545 documents and is growing.
+
+Overview
+========
+
+This Go package demonstrates who you can interact with [Pandoc Server](https://pandoc.org/pandoc-server.html)
+from a Go program.
+
+The provided proof of concept is called [md2html](md2html.1.html). It will
+walk a directory finding the ".md" files and convert them to ".html" files
+based on the defaults specified in a JSON configuration file.
 
 Concept
 -------
@@ -29,7 +31,6 @@ rendered document should be the same as our previous approach. The wind down of 
 from the exec is avoided.  We should be able to run conversions in parallel without
 worrying about running out of process handles. More parallel writes should imply that
 the overall time of the updates can be lowered.
-
 
 Requirements
 ------------
