@@ -246,3 +246,9 @@ func (cfg *Config) Convert(input io.Reader, contentType string) ([]byte, error) 
 	}
 	return src, nil
 }
+
+// Walk takes a path and walks the directories converting the files that map
+// to the From values in the configuration.
+func (cfg *Config) Walk(startPath string, fromExt string, toExt string) error {
+	return fmt.Errorf("Walk(startPath string) error not implemented.")
+}

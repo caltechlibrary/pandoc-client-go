@@ -1,3 +1,3 @@
-module github.com/caltechlibrary/pandoc-client-go
+module github.com/caltechlibrary/pandoc_client
 
 go 1.19
