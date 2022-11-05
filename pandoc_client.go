@@ -19,9 +19,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -169,7 +172,7 @@ func Load(fName string) (*Config, error) {
 
 // RootEndpoint takes content type and sends the request to the Pandoc Server
 // Root end point based on the state of configuration struct used.
-func (cfg *Config) RootEndpoint(contentType string) ([]byte, error) {
+func (cfg *Config) RootEndpoint() ([]byte, error) {
 	// NOTE: Pandoc Server API want JSON in POST not urlencoded form data
 	if cfg.Text == "" {
 		return nil, fmt.Errorf("expected to have a source text to convert, %+v", cfg)
@@ -229,32 +232,25 @@ func (cfg *Config) RootEndpoint(contentType string) ([]byte, error) {
 //		}
 //		src, err := os.ReadFile("htdocs/index.md")
 //		// ... handle error
-//		txt, err :=  cfg.Convert(bytes.NewReader(src), "text/plain"))
+//		txt, err :=  cfg.Convert(bytes.NewReader(src))
 //		if err := os.WriteFile("htdocs/index.html", src, 0664); err != nil {
 //		    // ... handle error
 //		}
 //
 // ```
-func (cfg *Config) Convert(input io.Reader, contentType string) ([]byte, error) {
-	// Check to make sure we have one of the supported mimetypes
-	if !inStringList(contentType, []string{"text/plain", "application/json", "application/octet-stream"}) {
-		return nil, fmt.Errorf("Only text/plain, application/json, application/octet-stream mimetypes are supported.")
-	}
+func (cfg *Config) Convert(input io.Reader) ([]byte, error) {
 	var src []byte
 
 	src, err := io.ReadAll(input)
 	if err != nil {
 		return nil, err
 	}
-	// See base64 encoding is needed.
-	if contentType == "application/octet-stream" {
-		//FIXME: confirm that we have a base 64 encoding binary stream
-	}
+	// NOTE: The source needs to already be converted to bytes, if necessary base64 encoded.
 	cfg.Text = fmt.Sprintf("%s", src)
 	defer func() {
 		cfg.Text = ""
 	}()
-	src, err = cfg.RootEndpoint(contentType)
+	src, err = cfg.RootEndpoint()
 	if err != nil {
 		return nil, err
 	}
@@ -264,5 +260,39 @@ func (cfg *Config) Convert(input io.Reader, contentType string) ([]byte, error) 
 // Walk takes a path and walks the directories converting the files that map
 // to the From values in the configuration.
 func (cfg *Config) Walk(startPath string, fromExt string, toExt string) error {
-	return fmt.Errorf("Walk(startPath string) error not implemented.")
+	err := filepath.Walk(startPath,
+		func(fName string, info fs.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+			if !info.IsDir() {
+				ext := path.Ext(fName)
+				if ext == fromExt {
+					toFName := strings.TrimSuffix(fName, ext) + toExt
+					src, err := os.ReadFile(fName)
+					if err != nil {
+						log.Printf("%s", err)
+						return err
+					}
+					txt, err := cfg.Convert(bytes.NewReader(src))
+					if err != nil {
+						log.Printf("%s", err)
+						return err
+					}
+					err = os.WriteFile(toFName, txt, 0664)
+					if err != nil {
+						log.Printf("%s", err)
+						return err
+					}
+					if cfg.Verbose {
+						log.Printf("covert %q to %q\n", fName, toFName)
+					}
+				}
+			}
+			return nil
+		})
+	if err != nil {
+		return err
+	}
+	return nil
 }

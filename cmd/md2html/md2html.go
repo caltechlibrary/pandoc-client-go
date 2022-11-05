@@ -64,6 +64,9 @@ the same file path using a ".html" extension instead of ".md".
 -license
 : display license
 
+-verbose
+: use verbose log output
+
 # EXAMPLE
 
 In this example we have markdown files in a directory structure
@@ -99,9 +102,11 @@ func usage(appName string) string {
 func main() {
 	appName := path.Base(os.Args[0])
 	showHelp, showVersion, showLicense := false, false, false
+	verbose := false
 	flag.BoolVar(&showHelp, "help", showHelp, "display help")
 	flag.BoolVar(&showVersion, "version", showVersion, "display version")
 	flag.BoolVar(&showLicense, "license", showLicense, "display license")
+	flag.BoolVar(&verbose, "verbose", verbose, "verbose log output")
 	flag.Parse()
 
 	if showHelp {
@@ -128,6 +133,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}
+	cfg.Verbose = verbose
 	cfg.From = "markdown"
 	cfg.To = "html5"
 	if err := cfg.Walk(args[1], ".md", ".html"); err != nil {
