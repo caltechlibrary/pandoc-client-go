@@ -6,7 +6,7 @@
     "dateCreated": "2022-11-04",
     "issueTracker": "https://github.com/caltechlibrary/pandoc-client-go/issues",
     "name": "pandoc-client-go",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "This is a Go package for working with Pandoc Server to convert content from one format to another.",
     "releaseNotes": "This is experimental software",
     "developmentStatus": "concept",
