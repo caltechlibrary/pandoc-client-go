@@ -11,7 +11,7 @@ authors:
     orcid: "https://orcid.org/0000-0003-0900-6903"
 
 repository-code: "git+https://github.com/caltechlibrary/pandoc-client-go"
-version: 0.0.0
+version: 0.0.1
 license-url: "https://spdx.org/licenses/BSD-3-Clause-Clear"
 keywords: [ "pandoc" ]
 
@@ -20,7 +20,7 @@ keywords: [ "pandoc" ]
 About this software
 ===================
 
-## pandoc-client-go 0.0.0
+## pandoc-client-go 0.0.1
 
 ### Authors
 

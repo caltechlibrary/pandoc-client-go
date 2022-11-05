@@ -54,7 +54,7 @@ Hi there Universe!
 	}
 	// Use verbose logging for tests.
 	cfg.Verbose = true
-	src, err := cfg.Convert(bytes.NewReader(mdText), "text/plain")
+	src, err := cfg.Convert(bytes.NewReader(mdText))
 	if err != nil {
 		t.Error(err)
 		t.FailNow()

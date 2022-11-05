@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pandoc Client (Concept)</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu" title="link to Caltech Library Homepage"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="install.html">INSTALL</a></li>
+    <li><a href="user-manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="https://github.com/caltechlibrary/pandoc-client-go">GitHub</a></li>
+</ul>
+</nav>
+
+<section>
+<h1 id="name">NAME</h1>
+<p>md2html</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<pre><code>md2html [OPTIONS] CONFIG_JSON HTDOCS</code></pre>
+<h1 id="description">DESCRIPTION</h1>
+<p>md2html convert files Markdown files found in <code>HTDOC_DIR</code>
+to HTML files. Two required parameters are <code>CONFIG_JSON</code> file
+and HTDOCS directory containing Markdown documents. The configuration
+JSON file should include any parameters need to format the “POST” sent
+to the <a href="https://pandoc.org/pandoc-server.html">Pandoc Server</a>
+(see the API documentaiton).</p>
+<p>The HTDOCS directory path will be recusively walked to find files
+ending in “.md” and write successfull conversions to the same file path
+using a “.html” extension instead of “.md”.</p>
+<h1 id="options">OPTIONS</h1>
+<dl>
+<dt>-help</dt>
+<dd>
+display help
+</dd>
+<dt>-version</dt>
+<dd>
+display version
+</dd>
+<dt>-license</dt>
+<dd>
+display license
+</dd>
+</dl>
+<h1 id="example">EXAMPLE</h1>
+<p>In this example we have markdown files in a directory structure
+called <code>/var/www/htdocs</code>. We’re using a config.json file
+contains</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"></code></pre></div>
+<p>The command to convert the Markdown files to HTML is</p>
+<pre class="shel"><code>md2html config.json /var/www/htdocs</code></pre>
+<p>The <code>/var/www/htdocs</code> directory needs to have write
+permission by the user running <code>md2html</code>. As the Markdown
+files are encountered a log message will be written indicating any
+errors or that the file was successful converted.</p>
+</section>
+
+<footer>
+<span>&copy; 2022 <a href="https://www.library.caltech.edu/copyright">Caltech Library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+</footer>
+</body>
+</html>

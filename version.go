@@ -2,7 +2,7 @@ package pandoc_client
 
 const (
 // Version of package
-    Version = "0.0.0"
+    Version = "0.0.1"
 
     License = `
 
