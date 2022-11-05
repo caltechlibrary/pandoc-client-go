@@ -2,7 +2,6 @@ package pandoc_client
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"testing"
 )
@@ -46,5 +45,9 @@ Hi there Universe!
 		t.Error(err)
 		t.FailNow()
 	}
-	fmt.Fprintf(os.Stdout, "DEBUG src: %s\n", src)
+	if len(src) == 0 {
+		t.Errorf("Expected content returned from cfg.Convert(), got none")
+		t.FailNow()
+	}
+	t.Errorf("FIXME: Need to make sure I am getting valid HTML ... ->\n%s\n", src)
 }
